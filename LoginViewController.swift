@@ -25,7 +25,7 @@ class LoginViewController: UIViewController {
 
     @IBAction func Button(_ sender: Any) {
         if(self.response.success == 1){
-//            CheckUser(username: self.UsernameText.text!, pass: self.PassText.text!,request_token: self.response.request_token)
+        CheckUser(username: self.UsernameText.text!, pass: self.PassText.text!,request_token: self.response.request_token)
             print("entre")
         }
         
@@ -33,13 +33,13 @@ class LoginViewController: UIViewController {
         let url = Router.login(username: self.UsernameText.text!, password: self.PassText.text!,request_token: self.response.request_token)
 //        print(url.urlRequest!)
 
-        APIClient.shared.requestItem(request: url, onCompletion: { (result: Result<LoginResponse,Error>) in
-            switch (result){
-            case .success(let response): self.response = response ;
-            case .failure(let error ): print(error)
-            }
-            print("Token \(self.response.request_token!) dio \(self.response.success!)" )
-        })
+//        APIClient.shared.requestItem(request: url, onCompletion: { (result: Result<LoginResponse,Error>) in
+//            switch (result){
+//            case .success(let response): self.response = response ;
+//            case .failure(let error ): print(error)
+//            }
+//            print("Token \(self.response.request_token!) dio \(self.response.success!)" )
+//        })
         
       
     }
@@ -71,8 +71,21 @@ class LoginViewController: UIViewController {
                 case .failure(let error ): print(error)
                 }
             
-//            print("Login \(self.response2.expires_at?) dio \(self.response2.success?)" )
+            print("Login \(self.response2.expires_at!) dio \(self.response2.success!)" )
             })
     }
+    
+    func getSession(request_token: String){
+        APIClient.shared.requestItem(request: Router.login(username: username, password: pass, request_token: request_token), onCompletion:{(result:Result<LoginResponse,Error>)
+                in
+                switch (result){
+                case .success(let response): self.response2 = response ;
+                case .failure(let error ): print(error)
+                }
+            
+            print("Login \(self.response2.expires_at!) dio \(self.response2.success!)" )
+            })
+    }
+    
 
 }
