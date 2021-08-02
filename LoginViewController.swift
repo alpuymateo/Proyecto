@@ -28,9 +28,18 @@ class LoginViewController: UIViewController {
 //            CheckUser(username: self.UsernameText.text!, pass: self.PassText.text!,request_token: self.response.request_token)
             print("entre")
         }
-        print(Router.getToken.urlRequest!)
-        print(Router.login(username: self.UsernameText.text!, password: self.PassText.text!,request_token: self.response.request_token).urlRequest!)
         
+        
+        let url = Router.login(username: self.UsernameText.text!, password: self.PassText.text!,request_token: self.response.request_token)
+//        print(url.urlRequest!)
+
+        APIClient.shared.requestItem(request: url, onCompletion: { (result: Result<LoginResponse,Error>) in
+            switch (result){
+            case .success(let response): self.response = response ;
+            case .failure(let error ): print(error)
+            }
+            print("Token \(self.response.request_token!) dio \(self.response.success!)" )
+        })
         
       
     }

@@ -9,6 +9,7 @@ import UIKit
 
 class MovieCollectionViewCell: UICollectionViewCell {
 
+    @IBOutlet weak var MovieCollectionMovieId: UILabel!
     @IBOutlet weak var MovieCollectionLabel: UILabel!
     @IBOutlet weak var MovieCollectionImage: UIImageView!
     override func awakeFromNib() {

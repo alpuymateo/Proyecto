@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Kingfisher
+
 
 class DetailedViewController: UIViewController {
 
-    @IBOutlet weak var CategoryButton: UIButton!
+    @IBOutlet weak var SimilarCollectionView: UICollectionView!
     @IBOutlet weak var OverviewText: UITextView!
     @IBOutlet weak var MovieImage: UIImageView!
     @IBOutlet weak var MovieTitleLabel: UILabel!
@@ -19,20 +21,17 @@ class DetailedViewController: UIViewController {
         super.viewDidLoad()
         LoadGroup(genre: 18)
         self.MovieTitleLabel.text = movie.title
+        
         let path = self.movie.poster_path
         let url = "https://image.tmdb.org/t/p/w500"
         let url2 = URL(string: url + path!)
-        if let data = try? Data(contentsOf: url2!) {
-               // Create Image and Update Image View
-            self.MovieImage.image = UIImage(data: data)
-            
-           }
+        self.MovieImage.kf.setImage(with: url2)
+        let nib: UINib = UINib(nibName: "MovieTableViewCell", bundle: nil)
+        SimilarCollectionView.register(nib, forCellWithReuseIdentifier: "MovieTableViewCell")
         self.OverviewText.text = self.movie.overview
       
     }
-    @IBAction func Category(_ sender: Any) {
-        performSegue(withIdentifier: "categorydetailsegue", sender: nil)
-    }
+
     func LoadGroup(genre:Int){
         APIClient.shared.requestItems(request: Router.getMoviesByGenre(genreId: genre), responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
                 in
@@ -42,14 +41,6 @@ class DetailedViewController: UIViewController {
                 }
 //            print(self.movies.count)
             })
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.identifier == "categorydetailsegue" {
-        
-        let CategoryDetailViewController = segue.destination as! CategoryDetailViewController
-        CategoryDetailViewController.movies = self.movies
-        CategoryDetailViewController.genre =      18
-        print(self.movies.count)
     }
     
 
@@ -64,4 +55,4 @@ class DetailedViewController: UIViewController {
     */
 
 }
-}
+
