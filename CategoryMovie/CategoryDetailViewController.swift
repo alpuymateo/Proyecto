@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class CategoryDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate {
     var genre = Int()
@@ -58,13 +59,10 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
             cell.configure(name: self.movies[indexPath.row].title)
             let path = self.movies[indexPath.row].poster_path
             let url = "https://image.tmdb.org/t/p/w500"
+
             let url2 = URL(string: url + path!)
-            if let data = try? Data(contentsOf: url2!) {
-                // Create Image and Update Image View
-                cell.MovieImage.image = UIImage(data: data)
-                cell.delegate = self
-                return cell
-            }
+            cell.MovieImage.kf.setImage(with: url2)
+
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingTableViewCell", for: indexPath) as! LoadingTableViewCell
             cell.LoadingIndicator.startAnimating()
@@ -110,6 +108,15 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
         let nib2: UINib = UINib(nibName: "LoadingTableViewCell", bundle: nil)
         CategoryTableView.register(nib, forCellReuseIdentifier: "CategoryMovieTableViewCell")
         CategoryTableView.register(nib2, forCellReuseIdentifier: "LoadingTableViewCell")
+        DispatchQueue.main.asyncAfter(deadline: .now() , execute:{
+            self.LoadGroup2(genre: self.genre)
+        })
+        print("PELICULAS ADENTRO\(self.genre)")
+        var i = 0
+        for item in self.movies {
+            i+=1
+            print("ITEM NRO \(i) poster \(item.poster_path!)")
+        }
         // Do any additional setup after loading the view.
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -118,6 +125,17 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
         DestViewController.movie = self.tappedCell.movie
     }
 }
+    func LoadGroup2(genre:Int){
+        APIClient.shared.requestItems(request: Router.getMoviesByGenre(genreId: genre), responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
+                in
+                switch (result){
+                case .success(let movie): self.movies = movie ;
+                case .failure(let error ): print(error)
+                }
+            self.CategoryTableView.reloadData()
+
+            })
+    }
     
 //    detailsviewcontrollerseg2
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
