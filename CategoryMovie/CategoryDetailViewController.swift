@@ -57,12 +57,11 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryMovieTableViewCell", for: indexPath) as! CategoryMovieTableViewCell
             cell.configure(name: self.movies[indexPath.row].title)
+            cell.RatingView.rating =  (self.movies[indexPath.row].vote_average)/2
             let path = self.movies[indexPath.row].poster_path
             let url = "https://image.tmdb.org/t/p/w500"
-
             let url2 = URL(string: url + path!)
             cell.MovieImage.kf.setImage(with: url2)
-
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingTableViewCell", for: indexPath) as! LoadingTableViewCell
             cell.LoadingIndicator.startAnimating()
@@ -72,17 +71,6 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
         
     }
 
-//        print(indexPath.row)
-//        print(self.movies.count)
-        
-          
-        
-           
-        
-      
-        
-    
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 250
     }
@@ -104,8 +92,8 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
         super.viewDidLoad()
         CategoryTableView.dataSource = self
         CategoryTableView.delegate = self
-        let nib: UINib = UINib(nibName: "CategoryMovieTableViewCell", bundle: nil)
         let nib2: UINib = UINib(nibName: "LoadingTableViewCell", bundle: nil)
+        let nib: UINib = UINib(nibName: "CategoryMovieTableViewCell", bundle: nil)
         CategoryTableView.register(nib, forCellReuseIdentifier: "CategoryMovieTableViewCell")
         CategoryTableView.register(nib2, forCellReuseIdentifier: "LoadingTableViewCell")
         DispatchQueue.main.asyncAfter(deadline: .now() , execute:{

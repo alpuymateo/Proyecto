@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Cosmos
 
 protocol CategoryMovieTableViewCellDelegate: AnyObject {
 //    func didTapButton(cell: CategoryMovieTableViewCell)
@@ -15,6 +16,7 @@ class CategoryMovieTableViewCell: UITableViewCell {
 
     weak var delegate: CategoryMovieTableViewCellDelegate?
 
+    @IBOutlet weak var RatingView: CosmosView!
     @IBOutlet weak var MovieImage: UIImageView!
     @IBOutlet weak var TitleLabel: UILabel!
     var movie: Movie!

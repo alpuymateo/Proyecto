@@ -7,52 +7,138 @@
 
 import UIKit
 import Kingfisher
+import Cosmos
 
-
-class DetailedViewController: UIViewController {
-
-    @IBOutlet weak var SimilarCollectionView: UICollectionView!
+class DetailedViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate{
+   
+    
+    @IBOutlet weak var SimilarTableView: UITableView!
+    @IBOutlet weak var RankingTab: CosmosView!
+    @IBOutlet weak var FavoriteSwitch: UISwitch!
     @IBOutlet weak var OverviewText: UITextView!
     @IBOutlet weak var MovieImage: UIImageView!
     @IBOutlet weak var MovieTitleLabel: UILabel!
+    var tappedCell = CategoryMovieTableViewCell()
     var movie :Movie!
     var movies = [Movie]()
+    var favorites = [Movie]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        LoadGroup(genre: 18)
+        if(self.favorites.count == 0 ){
+            DispatchQueue.main.async {
+                self.LoadGroup2()
+                self.LoadGroup(movie_id: self.movie.id)
+                
+            }
+            self.SimilarTableView.reloadData()
+        }
+        SimilarTableView.dataSource = self
+        SimilarTableView.delegate = self
+        self.FavoriteSwitch.isOn = false
         self.MovieTitleLabel.text = movie.title
-        
         let path = self.movie.poster_path
         let url = "https://image.tmdb.org/t/p/w500"
         let url2 = URL(string: url + path!)
         self.MovieImage.kf.setImage(with: url2)
-        let nib: UINib = UINib(nibName: "MovieTableViewCell", bundle: nil)
-        SimilarCollectionView.register(nib, forCellWithReuseIdentifier: "MovieTableViewCell")
+        self.RankingTab.rating = (self.movie.vote_average)/2
+        let nib: UINib = UINib(nibName: "CategoryMovieTableViewCell", bundle: nil)
+        SimilarTableView.register(nib, forCellReuseIdentifier: "CategoryMovieTableViewCell")
+        
         self.OverviewText.text = self.movie.overview
-      
-    }
-
-    func LoadGroup(genre:Int){
-        APIClient.shared.requestItems(request: Router.getMoviesByGenre(genreId: genre), responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
-                in
-                switch (result){
-                case .success(let movie): self.movies = movie ;
-                case .failure(let error ): print(error)
+        print("SOY FAVORITO id \(movie.id) Y TENGO \(self.favorites.count)")
+            for item2 in self.favorites {
+                if (item2.id == self.movie.id){
+                    print("soy favorita con id  \(item2.id!)")
+                    self.FavoriteSwitch.isOn = true
                 }
-//            print(self.movies.count)
-            })
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.movies.count
     }
-    */
-
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 250
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryMovieTableViewCell", for: indexPath) as! CategoryMovieTableViewCell
+        cell.configure(name: self.movies[indexPath.row].title)
+        let path = self.movies[indexPath.row].poster_path
+        let url = "https://image.tmdb.org/t/p/w500"
+        let url2 = URL(string: url + path!)
+        cell.MovieImage.kf.setImage(with: url2)
+        cell.RatingView.rating =  (self.movies[indexPath.row].vote_average)/2
+        return cell
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "favouritedetail" {
+//            let DestViewController = segue.destination as! DetailedViewController
+//            self.movie = self.tappedCell.movie
+        }
+    }
+    
+    @IBAction func valueChange(_ sender: UISwitch) {
+        if(sender.isOn){
+        print("entree")
+        LoadGroup3()
+        }
+        else {
+            print("entre a load grupo")
+        }
+    }
+    
+    func LoadGroup3(){
+        APIClient.shared.requestItem(request: Router.setFavorite( movie_id: self.movie.id), responseKey: "", onCompletion:{(result:Result<SuccessPostModel,Error>)
+            in
+            switch (result){
+            case .success(let movie): print(movie);
+                self.viewDidLoad()
+            case .failure(let error ): print(error)
+            }
+        })
+    }
+    
+    func LoadGroup2(){
+        APIClient.shared.requestItems(request: Router.getFavorites, responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
+            in
+            switch (result){
+            case .success(let movie): self.favorites = movie ;
+            case .failure(let error ): print(error)
+            }
+            print(self.favorites.count)
+            self.viewDidLoad()
+        })
+    }
+    
+    func LoadGroup(movie_id:Int){
+        APIClient.shared.requestItems(request: Router.getSimilars(movie_id: movie_id), responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
+            in
+            switch (result){
+            case .success(let movie): self.movies = movie ;
+            case .failure(let error ): print(error)
+            }
+                                        self.SimilarTableView.reloadData()        })
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(self.movies[indexPath.row].title!)
+        self.movie = self.movies[indexPath.row]
+        self.viewDidLoad()
+//        self.SimilarTableView.reloadData()
+//        performSegue(withIdentifier:"favouritedetail", sender: nil)
+    }
+    
+    
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
