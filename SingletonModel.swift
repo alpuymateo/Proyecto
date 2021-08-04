@@ -8,11 +8,11 @@
 import Foundation
 struct Settings {
     static var shared = Settings()
-    var session_id: String?
+    var sessionId: String?
     var categories: [Int] = [28,12,16,10751,36,10402,10749,35]
     
     func getSession() -> String?{
-        return self.session_id
+        return self.sessionId
     }
     
     private init() { }

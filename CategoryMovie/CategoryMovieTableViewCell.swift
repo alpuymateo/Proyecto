@@ -7,7 +7,7 @@
 
 import UIKit
 import Cosmos
-
+import Kingfisher
 protocol CategoryMovieTableViewCellDelegate: AnyObject {
 //    func didTapButton(cell: CategoryMovieTableViewCell)
 //    func didTapBackground()
@@ -26,6 +26,11 @@ class CategoryMovieTableViewCell: UITableViewCell {
     }
     func configure(name: String) {
         TitleLabel.text = name
+    }
+    func configure2(name: String, url: URL, ranking: Double) {
+        TitleLabel.text = name
+        self.MovieImage.kf.setImage(with: url)
+        self.RatingView.rating =  ranking/2
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

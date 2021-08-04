@@ -9,6 +9,7 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet weak var MainImage: UIImageView!
     @IBOutlet weak var PassText: UITextField!
     @IBOutlet weak var WarningLabel: UILabel!
     @IBOutlet weak var UsernameText: UITextField!
@@ -20,6 +21,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         self.WarningLabel.text = ""
         // Do any additional setup after loading the view.
+        self.MainImage.image = UIImage(named:"tmdb.png")
         LoadToken()
     }
    
@@ -83,21 +85,17 @@ class LoginViewController: UIViewController {
                         case 401:
                             message = "Incorrect password for user ."
                         default:
-                        message = "no entre en inugno"
+                        message = "no entre en ninguno"
                         }
                         
                         self.WarningLabel.text = message
                     }
                 }
-//            if(self.response2.success == 0){
-//                print("esta todo mal")
-//            }
-
             })
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 250
+        return 160
     }
     
     
@@ -107,7 +105,7 @@ class LoginViewController: UIViewController {
                 switch (result){
                 case .success(let response): self.response3 = response ;
                     self.performSegue(withIdentifier: "loginsegue", sender: self)
-                    Settings.shared.session_id = self.response3!.session_id!
+                    Settings.shared.sessionId = self.response3!.session_id!
                 case .failure(let error ): print(error)
                 }
             

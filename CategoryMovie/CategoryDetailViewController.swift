@@ -72,7 +72,7 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 250
+        return 160
     }
     
     func LoadGroup(genre:Int, page: Int){

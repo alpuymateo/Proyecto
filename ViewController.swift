@@ -15,8 +15,8 @@ class ViewController: UIViewController, MovieCollectionViewCellDelegate{
         let gen1 = (collectionviewcell?.ViewMoreLabel.text) ?? ""
         self.genre = Int(gen1)!
         performSegue(withIdentifier: "tapmoresegue", sender: self)
-        
     }
+    
     func collectionView(collectionviewcell: MovieCollectionViewCell?, index: Int, didTappedInTableViewCell: MovieTableViewCell) {
         //        print("Index \(index) )")
         for item in self.list {
@@ -61,6 +61,7 @@ class ViewController: UIViewController, MovieCollectionViewCellDelegate{
             getMovies()
             self.MoviesTableView.reloadData()
         })
+        
         func LoadGroup(genre:Genre){
             APIClient.shared.requestItems(request: Router.getMoviesByGenre(genreId: genre.id), responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
                 in
@@ -95,7 +96,6 @@ extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
         
         dicc[cell.MovieCollection] = indexPath.section
         return cell
-        
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.list.count
@@ -114,7 +114,6 @@ extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
     // Category Title
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        //        headerView.backgroundColor = UIColor.colorFromHex("#BC224B")
         let titleLabel = UILabel(frame: CGRect(x: 8, y: 0, width: 200, height: 44))
         headerView.addSubview(titleLabel)
         titleLabel.textColor = UIColor.darkGray
@@ -132,7 +131,6 @@ extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
         if segue.identifier == "tapmoresegue" {
             let CategoryDetailViewController = segue.destination as! CategoryDetailViewController
             CategoryDetailViewController.genre =  self.genre
-            
         }
     }
     
@@ -152,13 +150,11 @@ extension ViewController: UICollectionViewDataSource   {
         }else {
             print("INDEX PATH \(indexPath.row)")
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCollectionViewCell", for: indexPath) as! MovieCollectionViewCell
-//            print("DICC place \(dicc[collectionView]!) generoo \(self.list[dicc[collectionView]!].Genre.name!) ")
             cell.MovieCollectionLabel.text = self.list[dicc[collectionView]!].Movies[indexPath.row].title
             let path = self.list[dicc[collectionView]!].Movies[indexPath.row].poster_path
             let url = "https://image.tmdb.org/t/p/w500"
             let url2 = URL(string: url + path!)
             cell.MovieCollectionImage.kf.setImage(with: url2)
-            
             cell.MovieCollectionMovieId.text = String(self.list[dicc[collectionView]!].Movies[indexPath.row].id)
             return cell
         }

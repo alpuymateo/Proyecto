@@ -43,7 +43,7 @@ class FavouriteViewController: UIViewController,UITableViewDataSource, UITableVi
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 250
+        return 150
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "favouritedetail" {

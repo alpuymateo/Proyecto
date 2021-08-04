@@ -7,17 +7,16 @@
 
 import UIKit
 
-class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate, UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        
-    }
+class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate {
+
     @IBOutlet weak var SearchTab: UISearchBar!
     @IBOutlet weak var TableView: UITableView!
-    var EndTiping = Bool()
+    var timer = Timer()
     var resultSearchController = UISearchController()
     var movies2 = [Movie]()
     var movies = [Movie]()
     var filtered = [Movie]()
+    var searchtypingtext = String()
     var tappedCell = CategoryMovieTableViewCell()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,15 +27,17 @@ class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDa
         navigationItem.searchController = self.resultSearchController
         let nib: UINib = UINib(nibName: "CategoryMovieTableViewCell", bundle: nil)
         TableView.register(nib, forCellReuseIdentifier: "CategoryMovieTableViewCell")
-        self.LoadLetter(page: 1)
+        LoadAll()
+        
 
+    }
+    func LoadAll(){
         DispatchQueue.main.asyncAfter(deadline: .now() , execute:{
-            for i in 2...20 {
+            for i in 1...20 {
                 self.LoadLetter(page: i)
             }
         }
         )
-
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "searchdetailsegue" {
@@ -46,44 +47,52 @@ class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDa
 }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print("entreeal de cancelarr")
+        self.filtered.removeAll()
+        self.filtered.append(contentsOf: self.movies)
+        self.TableView.reloadData()
+
 
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("entreeal de cancelarr")
-        self.filtered = self.movies
+        self.filtered.removeAll()
+        self.filtered.append(contentsOf: self.movies)
+        self.TableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(self.movies[indexPath.row].title!)
         self.tappedCell.movie = self.filtered[indexPath.row]
         performSegue(withIdentifier:"searchdetailsegue", sender: nil)
+    }
+    @objc func timerAction() {
+        self.filtered.removeAll()
+        DispatchQueue.main.asyncAfter(deadline: .now() , execute:{
+        APIClient.shared.requestItems(request: Router.getByLetter(letters: self.searchtypingtext),responseKey: "results", onCompletion: {(result:Result<[Movie],Error>)
+            in
+            switch (result){
+            case .success(let movie):  self.filtered = movie;
+                self.TableView.reloadData(); print(self.filtered.count)
+            case .failure(let error ): print(error)
+            }
 
+        })
+
+        }
+        )
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.filtered.removeAll()
-        print("MAMA \(searchText)")
-        print(self.movies.count)
-        if(!searchText.isEmpty){
-
-            
-        for item in self.movies {
-            if(item.title.contains(searchText)) && !searchText.isEmpty{
-                print(item.title!)
-                self.filtered.append(item)
-                print("cantidad \(self.filtered.count)")
-                self.TableView.reloadData()
-            }
-            if (searchText.isEmpty){
-                self.filtered.append(item)
-                self.TableView.reloadData()
-            }
-
+//        self.filtered.removeAll()
+        self.searchtypingtext = searchText
+        if(searchText != ""){
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timerAction), userInfo: nil, repeats: false)
         }
-    }
         if(searchText == ""){
+            self.filtered.removeAll()
             self.filtered.append(contentsOf: self.movies)
+            self.TableView.reloadData()
+
         }
-        self.TableView.reloadData()
 
     
     }
@@ -100,37 +109,23 @@ class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDa
             print(self.movies.count)
             
         })
+        
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         self.filtered.count
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 250
+        return 160
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
             let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryMovieTableViewCell", for: indexPath) as! CategoryMovieTableViewCell
-            cell.configure(name: self.filtered[indexPath.row].title)
-            let path = self.filtered[indexPath.row].poster_path
-            let url = "https://image.tmdb.org/t/p/w500"
-            let url2 = URL(string: url + path!)
-            cell.MovieImage.kf.setImage(with: url2)
-            cell.RatingView.rating =  (self.movies[indexPath.row].vote_average)/2
+        if let path = self.filtered[indexPath.row].poster_path {
+            let url2 = URL(string: "https://image.tmdb.org/t/p/w500" + path)
+            cell.configure2(name: self.filtered[indexPath.row].title,url: url2!,ranking:            self.filtered[indexPath.row].vote_average)
+        }
             return cell
     }
-    
-    //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    //        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryMovieTableViewCell", for: indexPath) as! CategoryMovieTableViewCell
-    //        cell.configure(name: self.movies[indexPath.row].title)
-    //        print("entre")
-    //        let path = self.movies[indexPath.row].poster_path
-    //        let url = "https://image.tmdb.org/t/p/w500"
-    //
-    //        let url2 = URL(string: url + path!)
-    //        cell.MovieImage.kf.setImage(with: url2)
-    //        return cell
-    //    }
 }

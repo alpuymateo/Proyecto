@@ -13,7 +13,7 @@ enum APIRouteSessionPolicy {
 }
 
 let apiKey = "f4120e3802ceeb0a1b65b504a012e076"
-let session_id = Settings.shared.session_id
+let session_id = Settings.shared.sessionId
 protocol APIRoute: URLRequestConvertible {
     var method: HTTPMethod { get }
     var encoding: Alamofire.ParameterEncoding { get }
@@ -52,4 +52,4 @@ extension APIRoute {
         urlRequest.httpMethod = self.method.rawValue
         return try self.encoding.encode(urlRequest, with: params)
     }
-}
+}   

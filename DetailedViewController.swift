@@ -10,8 +10,9 @@ import Kingfisher
 import Cosmos
 
 class DetailedViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate{
-   
-    
+
+    @IBOutlet weak var Favorite2Label: UILabel!
+    @IBOutlet weak var FavoriteLabel: UILabel!
     @IBOutlet weak var SimilarTableView: UITableView!
     @IBOutlet weak var RankingTab: CosmosView!
     @IBOutlet weak var FavoriteSwitch: UISwitch!
@@ -24,11 +25,11 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
     var favorites = [Movie]()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.FavoriteLabel.text = ""
         if(self.favorites.count == 0 ){
             DispatchQueue.main.async {
                 self.LoadGroup2()
                 self.LoadGroup(movie_id: self.movie.id)
-                
             }
             self.SimilarTableView.reloadData()
         }
@@ -43,13 +44,13 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
         self.RankingTab.rating = (self.movie.vote_average)/2
         let nib: UINib = UINib(nibName: "CategoryMovieTableViewCell", bundle: nil)
         SimilarTableView.register(nib, forCellReuseIdentifier: "CategoryMovieTableViewCell")
-        
         self.OverviewText.text = self.movie.overview
-        print("SOY FAVORITO id \(movie.id) Y TENGO \(self.favorites.count)")
             for item2 in self.favorites {
                 if (item2.id == self.movie.id){
-                    print("soy favorita con id  \(item2.id!)")
                     self.FavoriteSwitch.isOn = true
+                    self.FavoriteSwitch.isHidden = true
+                    self.FavoriteLabel.text = "FAVORITE"
+                    self.Favorite2Label.text = ""
                 }
         }
     }
@@ -58,34 +59,26 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
         return self.movies.count
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 250
+        return 160
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryMovieTableViewCell", for: indexPath) as! CategoryMovieTableViewCell
-        cell.configure(name: self.movies[indexPath.row].title)
-        let path = self.movies[indexPath.row].poster_path
-        let url = "https://image.tmdb.org/t/p/w500"
-        let url2 = URL(string: url + path!)
-        cell.MovieImage.kf.setImage(with: url2)
-        cell.RatingView.rating =  (self.movies[indexPath.row].vote_average)/2
+        if let url2 = URL(string: "https://image.tmdb.org/t/p/w500" + self.movies[indexPath.row].poster_path) {
+            cell.configure2(name: self.movies[indexPath.row].title,url: url2,ranking: self.movies[indexPath.row].vote_average)
+        }
         return cell
     }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "favouritedetail" {
-//            let DestViewController = segue.destination as! DetailedViewController
-//            self.movie = self.tappedCell.movie
+        if segue.identifier == "favoritesegue" {
+            let DestViewController = segue.destination as! FavouriteViewController
         }
     }
     
     @IBAction func valueChange(_ sender: UISwitch) {
         if(sender.isOn){
-        print("entree")
         LoadGroup3()
-        }
-        else {
-            print("entre a load grupo")
         }
     }
     
@@ -94,7 +87,7 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
             in
             switch (result){
             case .success(let movie): print(movie);
-                self.viewDidLoad()
+                self.performSegue(withIdentifier: "favoritesegue", sender: self)
             case .failure(let error ): print(error)
             }
         })
@@ -125,20 +118,6 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
         print(self.movies[indexPath.row].title!)
         self.movie = self.movies[indexPath.row]
         self.viewDidLoad()
-//        self.SimilarTableView.reloadData()
-//        performSegue(withIdentifier:"favouritedetail", sender: nil)
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
 
