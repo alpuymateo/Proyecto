@@ -13,7 +13,7 @@ enum APIRouteSessionPolicy {
 }
 
 let apiKey = "f4120e3802ceeb0a1b65b504a012e076"
-let session_id = ""
+let session_id = Settings.shared.sessionId
 protocol APIRoute: URLRequestConvertible {
     var method: HTTPMethod { get }
     var encoding: Alamofire.ParameterEncoding { get }
@@ -43,7 +43,7 @@ extension APIRoute {
                 var urlComponents = URLComponents(string: baseURL + encodedPath)!
                 urlComponents.queryItems = [URLQueryItem(name: "api_key", value: apiKey /* API KEY */)]
                 if sessionPolicy == .privateDomain {
-                    urlComponents.queryItems?.append(URLQueryItem(name: "session_id", value: "" /* SESSION ID */))
+                    urlComponents.queryItems?.append(URLQueryItem(name: "session_id", value: session_id /* SESSION ID */))
                 }
                 url = try urlComponents.asURL()
         }
@@ -52,4 +52,4 @@ extension APIRoute {
         urlRequest.httpMethod = self.method.rawValue
         return try self.encoding.encode(urlRequest, with: params)
     }
-}
+}   

@@ -15,12 +15,10 @@ class ViewController: UIViewController, MovieCollectionViewCellDelegate{
         let gen1 = (collectionviewcell?.ViewMoreLabel.text) ?? ""
         self.genre = Int(gen1)!
         performSegue(withIdentifier: "tapmoresegue", sender: self)
-
     }
-
     
     func collectionView(collectionviewcell: MovieCollectionViewCell?, index: Int, didTappedInTableViewCell: MovieTableViewCell) {
-//        print("Index \(index) )")
+        //        print("Index \(index) )")
         for item in self.list {
             for item2 in item.Movies {
                 if(item2.id == Int(collectionviewcell!.MovieCollectionMovieId.text!)){
@@ -37,41 +35,20 @@ class ViewController: UIViewController, MovieCollectionViewCellDelegate{
     var tappedCell: Movie!
     var genre = 0
     var dicc: [UICollectionView : Int] = [:]
-    @IBOutlet weak var MenuBar: UIBarButtonItem!
-    //    var error = Error()
     @IBOutlet weak var MoviesTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //        print("TENGO SINGLETON \(Singleton.shared.session_id!)")
         MoviesTableView.dataSource = self
         MoviesTableView.delegate = self
         let nib: UINib = UINib(nibName: "MovieTableViewCell", bundle: nil)
         MoviesTableView.register(nib, forCellReuseIdentifier: "MovieTableViewCell")
-        func getGenres() {
-            for genre in self.genres {
-                print("ESTOY ACA\(genre.name!)")
-            }
-        }
+        
         func getMovies() {
             for genre in self.genres {
-                switch genre.id {
-                case 28:
+                if(Settings.shared.categories.contains(genre.id)){
                     LoadGroup(genre: genre)
-                case 12:
-                    LoadGroup(genre: genre)
-                case 16:
-                    LoadGroup(genre: genre)
-                case 10751:
-                    LoadGroup(genre: genre)
-                case 36:
-                    LoadGroup(genre: genre)
-                case 10402:
-                    LoadGroup(genre: genre)
-                case 10749:
-                    LoadGroup(genre: genre)
-                case 35:
-                    LoadGroup(genre: genre)
-                default:
-                    print()
                 }
             }
         }
@@ -84,6 +61,7 @@ class ViewController: UIViewController, MovieCollectionViewCellDelegate{
             getMovies()
             self.MoviesTableView.reloadData()
         })
+        
         func LoadGroup(genre:Genre){
             APIClient.shared.requestItems(request: Router.getMoviesByGenre(genreId: genre.id), responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
                 in
@@ -118,7 +96,6 @@ extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
         
         dicc[cell.MovieCollection] = indexPath.section
         return cell
-
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.list.count
@@ -137,7 +114,6 @@ extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
     // Category Title
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        //        headerView.backgroundColor = UIColor.colorFromHex("#BC224B")
         let titleLabel = UILabel(frame: CGRect(x: 8, y: 0, width: 200, height: 44))
         headerView.addSubview(titleLabel)
         titleLabel.textColor = UIColor.darkGray
@@ -155,7 +131,6 @@ extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
         if segue.identifier == "tapmoresegue" {
             let CategoryDetailViewController = segue.destination as! CategoryDetailViewController
             CategoryDetailViewController.genre =  self.genre
-//            print("PELICULAS\(self.genre)")
         }
     }
     
@@ -175,7 +150,6 @@ extension ViewController: UICollectionViewDataSource   {
         }else {
             print("INDEX PATH \(indexPath.row)")
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCollectionViewCell", for: indexPath) as! MovieCollectionViewCell
-            print(dicc[collectionView]!)
             cell.MovieCollectionLabel.text = self.list[dicc[collectionView]!].Movies[indexPath.row].title
             let path = self.list[dicc[collectionView]!].Movies[indexPath.row].poster_path
             let url = "https://image.tmdb.org/t/p/w500"
@@ -184,7 +158,6 @@ extension ViewController: UICollectionViewDataSource   {
             cell.MovieCollectionMovieId.text = String(self.list[dicc[collectionView]!].Movies[indexPath.row].id)
             return cell
         }
-        return UICollectionViewCell.init()
     }
 }
 
