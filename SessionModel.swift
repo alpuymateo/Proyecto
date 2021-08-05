@@ -8,14 +8,11 @@
 import Foundation
 import ObjectMapper
 class Session: Mappable {
-    required init?(map: Map) {
-        
-    }
+    required init?(map: Map) {}
     
     func mapping(map: Map) {
         self.success <- map["success"]
         self.session_id <- map["session_id"]
-
     }
     
     var success: Int!

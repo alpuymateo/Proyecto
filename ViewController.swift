@@ -9,26 +9,7 @@ import UIKit
 import Alamofire
 import Kingfisher
 
-
-class ViewController: UIViewController, MovieCollectionViewCellDelegate{
-    func collectionView(collectionviewcell: TapMoreCollectionViewCell?, index: Int, didTappedInTableViewCell: MovieTableViewCell) {
-        let gen1 = (collectionviewcell?.ViewMoreLabel.text) ?? ""
-        self.genre = Int(gen1)!
-        performSegue(withIdentifier: "tapmoresegue", sender: self)
-    }
-    
-    func collectionView(collectionviewcell: MovieCollectionViewCell?, index: Int, didTappedInTableViewCell: MovieTableViewCell) {
-        //        print("Index \(index) )")
-        for item in self.list {
-            for item2 in item.Movies {
-                if(item2.id == Int(collectionviewcell!.MovieCollectionMovieId.text!)){
-                    self.tappedCell = item2                }
-            }
-        }
-        performSegue(withIdentifier: "detailsviewcontrollerseg", sender: self)
-        
-    }
-    
+class ViewController: UIViewController{
     var list = [CategoryMovieModel]()
     var genres = [Genre]()
     var movies = [Movie]()
@@ -39,7 +20,6 @@ class ViewController: UIViewController, MovieCollectionViewCellDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //        print("TENGO SINGLETON \(Singleton.shared.session_id!)")
         MoviesTableView.dataSource = self
         MoviesTableView.delegate = self
         let nib: UINib = UINib(nibName: "MovieTableViewCell", bundle: nil)
@@ -86,14 +66,8 @@ extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTableViewCell", for: indexPath) as! MovieTableViewCell
-        
-        //        cell.MovieCollection.delegate = self
         cell.MovieCollection.dataSource = self
-        
-        //        let rowArray = self.list[indexPath.section].Movies
-        //        cell.updateCellWith(row: rowArray)
         cell.cellDelegate = self
-        
         dicc[cell.MovieCollection] = indexPath.section
         return cell
     }
@@ -107,21 +81,17 @@ extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 44
     }
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Prueba"
-    }
     
     // Category Title
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        let titleLabel = UILabel(frame: CGRect(x: 8, y: 0, width: 200, height: 44))
+        let titleLabel = UILabel(frame: CGRect(x: 8, y: 0, width: 200, height: 20))
         headerView.addSubview(titleLabel)
         titleLabel.textColor = UIColor.darkGray
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         titleLabel.text = self.list[section].Genre.name
         return headerView
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailsviewcontrollerseg" {
@@ -133,12 +103,9 @@ extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
             CategoryDetailViewController.genre =  self.genre
         }
     }
-    
-    
 }
 extension ViewController: UICollectionViewDataSource   {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //        let numberOfSections =  dicc[collectionView]
         return 11
     }
     
@@ -148,17 +115,33 @@ extension ViewController: UICollectionViewDataSource   {
             cell.ViewMoreLabel.text = String(self.list[dicc[collectionView]!].Genre.id)
             return cell
         }else {
-            print("INDEX PATH \(indexPath.row)")
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCollectionViewCell", for: indexPath) as! MovieCollectionViewCell
-            cell.MovieCollectionLabel.text = self.list[dicc[collectionView]!].Movies[indexPath.row].title
-            let path = self.list[dicc[collectionView]!].Movies[indexPath.row].poster_path
-            let url = "https://image.tmdb.org/t/p/w500"
-            let url2 = URL(string: url + path!)
-            cell.MovieCollectionImage.kf.setImage(with: url2)
-            cell.MovieCollectionMovieId.text = String(self.list[dicc[collectionView]!].Movies[indexPath.row].id)
+            
+            if  let path = self.list[dicc[collectionView]!].Movies[indexPath.row].poster_path {
+                let url = "https://image.tmdb.org/t/p/w500"
+                let url2 = URL(string: url + path)
+                cell.configure(textLabel: self.list[dicc[collectionView]!].Movies[indexPath.row].title, movieId: String(self.list[dicc[collectionView]!].Movies[indexPath.row].id), urlImage: url2!)
+            }
             return cell
         }
     }
 }
 
-
+extension ViewController: MovieCollectionViewCellDelegate {
+    
+    func collectionView(collectionviewcell: TapMoreCollectionViewCell?, index: Int, didTappedInTableViewCell: MovieTableViewCell) {
+        let gen1 = (collectionviewcell?.ViewMoreLabel.text) ?? ""
+        self.genre = Int(gen1)!
+        performSegue(withIdentifier: "tapmoresegue", sender: self)
+    }
+    
+    func collectionView(collectionviewcell: MovieCollectionViewCell?, index: Int, didTappedInTableViewCell: MovieTableViewCell) {
+        for item in self.list {
+            for item2 in item.Movies {
+                if(item2.id == Int(collectionviewcell!.MovieCollectionMovieId.text!)){
+                    self.tappedCell = item2                }
+            }
+        }
+        performSegue(withIdentifier: "detailsviewcontrollerseg", sender: self)
+    }
+}

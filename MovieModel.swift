@@ -27,7 +27,7 @@ class Movie:Mappable {
         self.video <- map["video"]
         self.vote_average <- map["vote_average"]
         self.vote_count <- map["vote_count"]
-
+        
     }
     
     var adult: Bool!
@@ -61,8 +61,6 @@ class Movie:Mappable {
         self.video = video
         self.vote_average = vote_average
         self.vote_count = vote_count
-        
     }
-        
-    }
+}
 

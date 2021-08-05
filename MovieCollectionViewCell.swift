@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import Kingfisher
 class MovieCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var MovieCollectionMovieId: UILabel!
@@ -15,6 +15,11 @@ class MovieCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+    }
+    func configure(textLabel:String,movieId: String, urlImage: URL ){
+        self.MovieCollectionImage.kf.setImage(with: urlImage)
+        self.MovieCollectionLabel.text = textLabel
+        self.MovieCollectionMovieId.text = movieId
     }
 
 

@@ -214,7 +214,6 @@
         <!--MAIN-->
         <scene sceneID="yUt-eE-CXN">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LUC-fb-hmA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zbS-NS-aNn" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="MAIN" id="AaJ-SZ-5fP"/>
                     <toolbarItems/>
@@ -227,6 +226,7 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="9it-jk-rPh"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LUC-fb-hmA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="955.07246376811599" y="77.678571428571431"/>
         </scene>
@@ -321,6 +321,11 @@
             <point key="canvasLocation" x="-931.88405797101461" y="389.73214285714283"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="hVs-6S-KDE">
+            <size key="intrinsicContentSize" width="120" height="20"/>
+        </designable>
+    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="gY0-hw-heE"/>
         <segue reference="Zic-4j-kDC"/>

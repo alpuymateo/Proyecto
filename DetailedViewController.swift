@@ -10,7 +10,7 @@ import Kingfisher
 import Cosmos
 
 class DetailedViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate{
-
+    
     @IBOutlet weak var Favorite2Label: UILabel!
     @IBOutlet weak var FavoriteLabel: UILabel!
     @IBOutlet weak var SimilarTableView: UITableView!
@@ -35,6 +35,7 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
         }
         SimilarTableView.dataSource = self
         SimilarTableView.delegate = self
+        
         self.FavoriteSwitch.isOn = false
         self.MovieTitleLabel.text = movie.title
         let path = self.movie.poster_path
@@ -45,16 +46,15 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
         let nib: UINib = UINib(nibName: "CategoryMovieTableViewCell", bundle: nil)
         SimilarTableView.register(nib, forCellReuseIdentifier: "CategoryMovieTableViewCell")
         self.OverviewText.text = self.movie.overview
-            for item2 in self.favorites {
-                if (item2.id == self.movie.id){
-                    self.FavoriteSwitch.isOn = true
-                    self.FavoriteSwitch.isHidden = true
-                    self.FavoriteLabel.text = "FAVORITE"
-                    self.Favorite2Label.text = ""
-                }
+        for item2 in self.favorites {
+            if (item2.id == self.movie.id){
+                self.FavoriteSwitch.isOn = true
+                self.FavoriteSwitch.isHidden = true
+                self.FavoriteLabel.text = "FAVORITE"
+                self.Favorite2Label.text = ""
+            }
         }
     }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.movies.count
     }
@@ -69,16 +69,9 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
         return cell
     }
     
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "favoritesegue" {
-            let DestViewController = segue.destination as! FavouriteViewController
-        }
-    }
-    
     @IBAction func valueChange(_ sender: UISwitch) {
         if(sender.isOn){
-        LoadGroup3()
+            LoadGroup3()
         }
     }
     
@@ -112,7 +105,8 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
             case .success(let movie): self.movies = movie ;
             case .failure(let error ): print(error)
             }
-                                        self.SimilarTableView.reloadData()        })
+            self.SimilarTableView.reloadData()
+        })
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(self.movies[indexPath.row].title!)
