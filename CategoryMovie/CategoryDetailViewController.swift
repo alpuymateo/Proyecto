@@ -42,12 +42,10 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
     
     func beginFetch(){
         fetchMore = true
-        print("begin fetch")
         CategoryTableView.reloadSections(IndexSet(integer: 1), with: .none)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute:{
             self.LoadGroup(genre: self.genre, page: self.pageNumber + 1)
             self.movies.append(contentsOf:  self.newmovies)
-            print("ESTOY ADENTRO BEGIN FETCH \(self.movies.count)")
             self.fetchMore = false
             self.CategoryTableView.reloadData()
         })
@@ -99,12 +97,6 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
         DispatchQueue.main.asyncAfter(deadline: .now() , execute:{
             self.LoadGroup2(genre: self.genre)
         })
-        print("PELICULAS ADENTRO\(self.genre)")
-        var i = 0
-        for item in self.movies {
-            i+=1
-            print("ITEM NRO \(i) poster \(item.poster_path!)")
-        }
         // Do any additional setup after loading the view.
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -127,7 +119,6 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
     
 //    detailsviewcontrollerseg2
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(self.movies[indexPath.row].title!)
         self.tappedCell.movie = self.movies[indexPath.row]
         performSegue(withIdentifier:"detailsviewcontrollerseg2", sender: nil)
 

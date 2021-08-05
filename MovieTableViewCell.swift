@@ -52,11 +52,9 @@ extension MovieTableViewCell: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if (indexPath.item < 10){
             let cell = collectionView.cellForItem(at: indexPath) as? MovieCollectionViewCell
-            print("I'm tapping the \(indexPath.item)")
             self.cellDelegate?.collectionView(collectionviewcell: cell, index: indexPath.item, didTappedInTableViewCell: self)
         } else{
             let cell = collectionView.cellForItem(at: indexPath) as? TapMoreCollectionViewCell
-            print("cellll")
             self.cellDelegate?.collectionView(collectionviewcell: cell, index: indexPath.item, didTappedInTableViewCell: self)
             
 //            self.cellDelegate?.collectionView(collectionviewcell: cell2, index: indexPath.item, didTappedInTableViewCell: self)

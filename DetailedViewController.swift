@@ -11,8 +11,9 @@ import Cosmos
 
 class DetailedViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate{
     
+    @IBOutlet weak var starImage: UIImageView!
     @IBOutlet weak var Favorite2Label: UILabel!
-    @IBOutlet weak var FavoriteLabel: UILabel!
+//    @IBOutlet weak var FavoriteLabel: UILabel!
     @IBOutlet weak var SimilarTableView: UITableView!
     @IBOutlet weak var RankingTab: CosmosView!
     @IBOutlet weak var FavoriteSwitch: UISwitch!
@@ -25,7 +26,8 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
     var favorites = [Movie]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.FavoriteLabel.text = ""
+        self.starImage.image =  UIImage(named:"star.png")
+        
         if(self.favorites.count == 0 ){
             DispatchQueue.main.async {
                 self.LoadGroup2()
@@ -35,8 +37,10 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
         }
         SimilarTableView.dataSource = self
         SimilarTableView.delegate = self
-        
+        self.starImage.isHidden = true
         self.FavoriteSwitch.isOn = false
+        self.Favorite2Label.isHidden = false
+        self.FavoriteSwitch.isHidden = false
         self.MovieTitleLabel.text = movie.title
         let path = self.movie.poster_path
         let url = "https://image.tmdb.org/t/p/w500"
@@ -50,9 +54,10 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
             if (item2.id == self.movie.id){
                 self.FavoriteSwitch.isOn = true
                 self.FavoriteSwitch.isHidden = true
-                self.FavoriteLabel.text = "FAVORITE"
-                self.Favorite2Label.text = ""
+                self.starImage.isHidden = false
+                self.Favorite2Label.isHidden = true
             }
+
         }
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -79,7 +84,7 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
         APIClient.shared.requestItem(request: Router.setFavorite( movie_id: self.movie.id), responseKey: "", onCompletion:{(result:Result<SuccessPostModel,Error>)
             in
             switch (result){
-            case .success(let movie): print(movie);
+            case .success(_):
                 self.performSegue(withIdentifier: "favoritesegue", sender: self)
             case .failure(let error ): print(error)
             }
@@ -93,7 +98,6 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
             case .success(let movie): self.favorites = movie ;
             case .failure(let error ): print(error)
             }
-            print(self.favorites.count)
             self.viewDidLoad()
         })
     }
@@ -109,9 +113,10 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
         })
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(self.movies[indexPath.row].title!)
         self.movie = self.movies[indexPath.row]
+        self.LoadGroup(movie_id: self.movie.id)
         self.viewDidLoad()
+        self.SimilarTableView.reloadData()
     }
 }
 

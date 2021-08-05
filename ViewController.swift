@@ -19,7 +19,6 @@ class ViewController: UIViewController{
     @IBOutlet weak var MoviesTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         MoviesTableView.dataSource = self
         MoviesTableView.delegate = self
         let nib: UINib = UINib(nibName: "MovieTableViewCell", bundle: nil)
@@ -116,7 +115,7 @@ extension ViewController: UICollectionViewDataSource   {
             return cell
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCollectionViewCell", for: indexPath) as! MovieCollectionViewCell
-            
+        
             if  let path = self.list[dicc[collectionView]!].Movies[indexPath.row].poster_path {
                 let url = "https://image.tmdb.org/t/p/w500"
                 let url2 = URL(string: url + path)

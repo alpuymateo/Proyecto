@@ -49,14 +49,14 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AWH-yb-o4m">
-                                <rect key="frame" x="232" y="119" width="150" height="37"/>
+                                <rect key="frame" x="232" y="127" width="150" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gGI-1H-6jl">
-                                <rect key="frame" x="225" y="155" width="157" height="120"/>
+                                <rect key="frame" x="225" y="165" width="157" height="110"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -64,7 +64,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BoU-wn-eYV">
-                                <rect key="frame" x="335" y="102" width="49" height="31"/>
+                                <rect key="frame" x="324" y="99" width="49" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="valueChange:" destination="wJC-TL-Faj" eventType="valueChanged" id="srU-7H-9Ts"/>
@@ -83,21 +83,18 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hVs-6S-KDE" customClass="CosmosView" customModule="Cosmos">
-                                <rect key="frame" x="232" y="283" width="175" height="50"/>
+                                <rect key="frame" x="232" y="283" width="139" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLP-ZX-etY">
-                                <rect key="frame" x="19" y="97" width="182" height="21"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4sD-x6-1WY">
+                                <rect key="frame" x="352" y="99" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FAVORITE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AoK-n1-H6R">
-                                <rect key="frame" x="233" y="104" width="94" height="26"/>
+                                <rect key="frame" x="225" y="102" width="90" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -109,13 +106,13 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="Favorite2Label" destination="AoK-n1-H6R" id="n2P-B0-dGg"/>
-                        <outlet property="FavoriteLabel" destination="WLP-ZX-etY" id="1Mi-6A-j82"/>
                         <outlet property="FavoriteSwitch" destination="BoU-wn-eYV" id="Zmc-0E-Oga"/>
                         <outlet property="MovieImage" destination="QZU-LL-dO8" id="gVB-pt-aZ2"/>
                         <outlet property="MovieTitleLabel" destination="AWH-yb-o4m" id="fUy-Uz-RC8"/>
                         <outlet property="OverviewText" destination="gGI-1H-6jl" id="YCq-ut-5bR"/>
                         <outlet property="RankingTab" destination="hVs-6S-KDE" id="eGH-YA-QOG"/>
                         <outlet property="SimilarTableView" destination="7Ne-aF-w5J" id="Qmf-dW-xo5"/>
+                        <outlet property="starImage" destination="4sD-x6-1WY" id="1OQ-Yx-emF"/>
                         <segue destination="0vz-Ng-q02" kind="show" identifier="favoritesegue" id="ckX-qj-Psp"/>
                     </connections>
                 </viewController>
@@ -128,7 +125,7 @@
             <objects>
                 <viewController id="0vz-Ng-q02" customClass="FavouriteViewController" customModule="Proyecto" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oqR-Vp-QVb">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Et0-Yi-eY9">
@@ -266,7 +263,7 @@
                                 <rect key="frame" x="159" y="471" width="97" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bp1-5P-sqe">
                                 <rect key="frame" x="185" y="536" width="45" height="30"/>
@@ -327,8 +324,8 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="gY0-hw-heE"/>
-        <segue reference="Zic-4j-kDC"/>
+        <segue reference="ckX-qj-Psp"/>
+        <segue reference="70d-1k-7BK"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">

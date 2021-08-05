@@ -21,11 +21,7 @@ class FavouriteViewController: UIViewController,UITableViewDataSource, UITableVi
         let nib: UINib = UINib(nibName: "CategoryMovieTableViewCell", bundle: nil)
         FavouriteTableView.register(nib, forCellReuseIdentifier: "CategoryMovieTableViewCell")
         LoadGroup()
-//        LoadGr
-//        SetFavorite()
-      
-//        print(.urlRequest!)
-        // Do any additional setup after loading the view.
+
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.movies.count
@@ -51,18 +47,6 @@ class FavouriteViewController: UIViewController,UITableViewDataSource, UITableVi
             DestViewController.movie = self.tappedCell.movie
         }
     }
-    
-//    func SetFavorite(){
-//        print(Router.setFavorite(session_id: Settings.shared.session_id!, movie_id: 508943).urlRequest)
-//        APIClient.shared.requestItem(request: Router.setFavorite(session_id: Settings.shared.session_id!, movie_id: 508943), responseKey: "", onCompletion:{(result:Result<SuccessPostModel,Error>)
-//            in
-//            switch (result){
-//            case .success(let success):print( success) ;
-//            case .failure(let error ): print(error)
-//            }
-//            self.FavouriteTableView.reloadData()
-//        })
-//    }
     
     func LoadGroup(){
         APIClient.shared.requestItems(request: Router.getFavorites, responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
