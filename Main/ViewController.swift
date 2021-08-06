@@ -10,51 +10,54 @@ import Alamofire
 import Kingfisher
 
 class ViewController: UIViewController{
+    @IBOutlet weak var MoviesTableView: UITableView!
     var list = [CategoryMovieModel]()
     var genres = [Genre]()
     var movies = [Movie]()
     var tappedCell: Movie!
     var genre = 0
     var dicc: [UICollectionView : Int] = [:]
-    @IBOutlet weak var MoviesTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         MoviesTableView.dataSource = self
         MoviesTableView.delegate = self
         let nib: UINib = UINib(nibName: "MovieTableViewCell", bundle: nil)
         MoviesTableView.register(nib, forCellReuseIdentifier: "MovieTableViewCell")
-        
-        func getMovies() {
-            for genre in self.genres {
-                if(Settings.shared.categories.contains(genre.id)){
-                    LoadGroup(genre: genre)
-                }
-            }
-        }
+        getData()
+    }
+    
+    func getData(){
         APIClient.shared.requestItems(request: Router.getGenre,responseKey: "genres", onCompletion: {(result:Result<[Genre],Error>)
             in
             switch (result){
             case .success(let genre): self.genres = genre
             case .failure(let error ): print(error)
             }
-            getMovies()
+            self.getMovies()
             self.MoviesTableView.reloadData()
         })
-        
-        func LoadGroup(genre:Genre){
-            APIClient.shared.requestItems(request: Router.getMoviesByGenre(genreId: genre.id), responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
-                in
-                switch (result){
-                case .success(let movie): self.movies = movie ;
-                case .failure(let error ): print(error)
-                }
-                let a = CategoryMovieModel(Genre: genre, Movies: self.movies)
-                self.list.append(a)
-                self.MoviesTableView.reloadData()
-            })
+    }
+    func getMovies() {
+        for genre in self.genres {
+            if(Settings.shared.categories.contains(genre.id)){
+                LoadGroup(genre: genre)
+            }
         }
     }
+    func LoadGroup(genre:Genre){
+        APIClient.shared.requestItems(request: Router.getMoviesByGenre(genreId: genre.id), responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
+            in
+            switch (result){
+            case .success(let movie): self.movies = movie ;
+            case .failure(let error ): print(error)
+            }
+            let a = CategoryMovieModel(Genre: genre, Movies: self.movies)
+            self.list.append(a)
+            self.MoviesTableView.reloadData()
+        })
+    }
 }
+
 
 
 extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
@@ -78,7 +81,7 @@ extension ViewController:  UITableViewDelegate, UITableViewDataSource  {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
+        return 20
     }
     
     // Category Title
@@ -127,7 +130,6 @@ extension ViewController: UICollectionViewDataSource   {
 }
 
 extension ViewController: MovieCollectionViewCellDelegate {
-    
     func collectionView(collectionviewcell: TapMoreCollectionViewCell?, index: Int, didTappedInTableViewCell: MovieTableViewCell) {
         let gen1 = (collectionviewcell?.ViewMoreLabel.text) ?? ""
         self.genre = Int(gen1)!
@@ -138,7 +140,8 @@ extension ViewController: MovieCollectionViewCellDelegate {
         for item in self.list {
             for item2 in item.Movies {
                 if(item2.id == Int(collectionviewcell!.MovieCollectionMovieId.text!)){
-                    self.tappedCell = item2                }
+                    self.tappedCell = item2
+                }
             }
         }
         performSegue(withIdentifier: "detailsviewcontrollerseg", sender: self)

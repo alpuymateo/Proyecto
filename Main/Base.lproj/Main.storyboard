@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="45y-Yn-jwI">
-                                <rect key="frame" x="0.0" y="36" width="414" height="860"/>
+                                <rect key="frame" x="0.0" y="36" width="414" height="777"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
@@ -51,12 +51,12 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AWH-yb-o4m">
                                 <rect key="frame" x="232" y="127" width="150" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gGI-1H-6jl">
-                                <rect key="frame" x="225" y="165" width="157" height="110"/>
+                                <rect key="frame" x="225" y="165" width="157" height="96"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -83,7 +83,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hVs-6S-KDE" customClass="CosmosView" customModule="Cosmos">
-                                <rect key="frame" x="232" y="283" width="139" height="36"/>
+                                <rect key="frame" x="232" y="314" width="139" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
@@ -95,6 +95,20 @@
                                 <rect key="frame" x="225" y="102" width="90" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Release Date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rO9-Po-Pqg">
+                                <rect key="frame" x="230" y="269" width="169" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Relese Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlh-R3-ThS">
+                                <rect key="frame" x="230" y="285" width="169" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -112,6 +126,7 @@
                         <outlet property="OverviewText" destination="gGI-1H-6jl" id="YCq-ut-5bR"/>
                         <outlet property="RankingTab" destination="hVs-6S-KDE" id="eGH-YA-QOG"/>
                         <outlet property="SimilarTableView" destination="7Ne-aF-w5J" id="Qmf-dW-xo5"/>
+                        <outlet property="releaseDate" destination="xlh-R3-ThS" id="sWC-8Q-Up8"/>
                         <outlet property="starImage" destination="4sD-x6-1WY" id="1OQ-Yx-emF"/>
                         <segue destination="0vz-Ng-q02" kind="show" identifier="favoritesegue" id="ckX-qj-Psp"/>
                     </connections>
@@ -137,7 +152,7 @@
                         <viewLayoutGuide key="safeArea" id="gxa-OK-vuK"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="FAVORITES" id="pqP-ML-2MQ"/>
+                    <tabBarItem key="tabBarItem" title="FAVORITES" selectedImage="star" catalog="system" id="pqP-ML-2MQ"/>
                     <navigationItem key="navigationItem" id="qsn-V7-zOb"/>
                     <connections>
                         <outlet property="FavouriteTableView" destination="Et0-Yi-eY9" id="uWp-ah-ckn"/>
@@ -170,7 +185,7 @@
                         <viewLayoutGuide key="safeArea" id="Z4P-tz-hcn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="SEARCH" id="Pbw-FL-edY"/>
+                    <tabBarItem key="tabBarItem" title="SEARCH" selectedImage="magnifyingglass" catalog="system" id="Pbw-FL-edY"/>
                     <connections>
                         <outlet property="SearchTab" destination="M5m-vY-CZN" id="BrW-Gn-OaQ"/>
                         <outlet property="TableView" destination="l1U-Tx-12g" id="Ae0-TP-tRK"/>
@@ -212,7 +227,7 @@
         <scene sceneID="yUt-eE-CXN">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zbS-NS-aNn" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="MAIN" id="AaJ-SZ-5fP"/>
+                    <tabBarItem key="tabBarItem" title="MAIN" selectedImage="homekit" catalog="system" id="AaJ-SZ-5fP"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="c3w-aV-50J">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -240,33 +255,33 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="User" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBR-vC-sRU">
-                                <rect key="frame" x="187" y="333" width="36" height="21"/>
+                                <rect key="frame" x="185" y="333" width="36" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vhq-tC-umO">
-                                <rect key="frame" x="159" y="375" width="97" height="34"/>
+                                <rect key="frame" x="157" y="375" width="97" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NsF-Uc-bPL">
-                                <rect key="frame" x="170" y="442" width="74" height="21"/>
+                                <rect key="frame" x="168" y="442" width="74" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PCQ-KZ-sY5">
-                                <rect key="frame" x="159" y="471" width="97" height="34"/>
+                                <rect key="frame" x="157" y="471" width="97" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bp1-5P-sqe">
-                                <rect key="frame" x="185" y="536" width="45" height="30"/>
+                                <rect key="frame" x="183" y="536" width="45" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="LOGIN"/>
                                 <connections>
@@ -325,9 +340,12 @@
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="ckX-qj-Psp"/>
-        <segue reference="70d-1k-7BK"/>
+        <segue reference="Zic-4j-kDC"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="homekit" catalog="system" width="128" height="106"/>
+        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <image name="star" catalog="system" width="128" height="116"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -60,7 +60,6 @@ enum Router: APIRoute{
             let url = "authentication/token/new?"
             let params :[String:Any] =  [:]
             return try encoded(path: url, params: params)
-      
         case .getMoviesByGenre(genreId: let genreId):
             let url = "discover/movie?"
             return try encoded(path: url, params: ["with_genres" : genreId])

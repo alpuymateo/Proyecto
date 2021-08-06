@@ -32,15 +32,6 @@ class LoginViewController: UIViewController {
             CheckUser(username: self.UsernameText.text!, pass: self.PassText.text!,request_token: self.response.request_token)
         }
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     func LoadToken(){
         APIClient.shared.requestItem(request: Router.getToken, onCompletion:{(result:Result<LoginResponse,Error>)
             in
@@ -65,9 +56,8 @@ class LoginViewController: UIViewController {
                     case 401:
                         message = "Incorrect password for user ."
                     default:
-                        message = "no entre en ninguno"
+                        message = "unknown error"
                     }
-                    
                     self.WarningLabel.text = message
                 }
             }
@@ -77,8 +67,6 @@ class LoginViewController: UIViewController {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 160
     }
-    
-    
     func getSession(request_token: String){
         APIClient.shared.requestItem(request:Router.getSession(request_token: self.response2.request_token), onCompletion:{(result:Result<Session,Error>)
             in
@@ -88,9 +76,6 @@ class LoginViewController: UIViewController {
                 Settings.shared.sessionId = self.response3!.session_id!
             case .failure(let error ): print(error)
             }
-            
         })
     }
-    
-    
 }

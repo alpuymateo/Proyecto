@@ -8,21 +8,15 @@
 import UIKit
 import Kingfisher
 
-class CategoryDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate {
+class CategoryDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate
+{
+    @IBOutlet weak var CategoryTableView: UITableView!
     var genre = Int()
     var movies = [Movie]()
     var fetchMore = Bool()
     var pageNumber = 1
     var newmovies = [Movie]();
     var tappedCell = CategoryMovieTableViewCell()
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(section == 0){
-            return self.movies.count
-        } else if section == 1 && fetchMore{
-            return 1
-        }
-        return 0
-    }
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -32,7 +26,6 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
-//        print("Offset \(offsetY) contentHeight \(contentHeight)")
         if(offsetY > contentHeight - scrollView.frame.height){
             if !fetchMore {
                 self.beginFetch()
@@ -40,6 +33,14 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
         }
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(section == 0){
+            return self.movies.count
+        } else if section == 1 && fetchMore{
+            return 1
+        }
+        return 0
+    }
     func beginFetch(){
         fetchMore = true
         CategoryTableView.reloadSections(IndexSet(integer: 1), with: .none)
@@ -66,27 +67,24 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
             return cell
         }
         return UITableViewCell.init()
-        
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 160
     }
     
     func LoadGroup(genre:Int, page: Int){
         APIClient.shared.requestItems(request: Router.getGenreWithPage(genreId: genre, page: page), responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
-                in
-                switch (result){
-                case .success(let movie): self.newmovies = movie ;
-                case .failure(let error ): print(error)
-                }
-            })
+            in
+            switch (result){
+            case .success(let movie): self.newmovies = movie ;
+            case .failure(let error ): print(error)
+            }
+        })
     }
-
-
-    @IBOutlet weak var CategoryTableView: UITableView!
+    
+    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         CategoryTableView.dataSource = self
         CategoryTableView.delegate = self
@@ -97,41 +95,28 @@ class CategoryDetailViewController: UIViewController, UITableViewDataSource, UIT
         DispatchQueue.main.asyncAfter(deadline: .now() , execute:{
             self.LoadGroup2(genre: self.genre)
         })
-        // Do any additional setup after loading the view.
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.identifier == "detailsviewcontrollerseg2" {
-        let DestViewController = segue.destination as! DetailedViewController
-        DestViewController.movie = self.tappedCell.movie
+        if segue.identifier == "detailsviewcontrollerseg2" {
+            let DestViewController = segue.destination as! DetailedViewController
+            DestViewController.movie = self.tappedCell.movie
+        }
     }
-}
     func LoadGroup2(genre:Int){
         APIClient.shared.requestItems(request: Router.getMoviesByGenre(genreId: genre), responseKey: "results", onCompletion:{(result:Result<[Movie],Error>)
-                in
-                switch (result){
-                case .success(let movie): self.movies = movie ;
-                case .failure(let error ): print(error)
-                }
+            in
+            switch (result){
+            case .success(let movie): self.movies = movie ;
+            case .failure(let error ): print(error)
+            }
             self.CategoryTableView.reloadData()
-
-            })
+        })
     }
     
-//    detailsviewcontrollerseg2
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tappedCell.movie = self.movies[indexPath.row]
         performSegue(withIdentifier:"detailsviewcontrollerseg2", sender: nil)
-
+        
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 

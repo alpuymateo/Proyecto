@@ -7,10 +7,8 @@
 
 import UIKit
 
-class FavouriteViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate {
-    
-    
-    
+class FavouriteViewController: UIViewController,UITableViewDataSource, UITableViewDelegate
+{
     @IBOutlet weak var FavouriteTableView: UITableView!
     var movies = [Movie]()
     var tappedCell = CategoryMovieTableViewCell()
@@ -20,8 +18,8 @@ class FavouriteViewController: UIViewController,UITableViewDataSource, UITableVi
         FavouriteTableView.delegate = self
         let nib: UINib = UINib(nibName: "CategoryMovieTableViewCell", bundle: nil)
         FavouriteTableView.register(nib, forCellReuseIdentifier: "CategoryMovieTableViewCell")
+        
         LoadGroup()
-
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.movies.count
@@ -35,7 +33,6 @@ class FavouriteViewController: UIViewController,UITableViewDataSource, UITableVi
         let url2 = URL(string: url + path!)
         cell.MovieImage.kf.setImage(with: url2)
         cell.RatingView.rating =  (self.movies[indexPath.row].vote_average)/2
-
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -56,7 +53,6 @@ class FavouriteViewController: UIViewController,UITableViewDataSource, UITableVi
             case .failure(let error ): print(error)
             }
             self.FavouriteTableView.reloadData()
-            
         })
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -64,21 +60,10 @@ class FavouriteViewController: UIViewController,UITableViewDataSource, UITableVi
     }
     override func viewDidAppear(_ animated: Bool) {
         LoadGroup()
-        
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(self.movies[indexPath.row].title!)
         self.tappedCell.movie = self.movies[indexPath.row]
         performSegue(withIdentifier:"favouritedetail", sender: nil)
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }

@@ -7,8 +7,8 @@
 
 import UIKit
 
-class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate {
-    
+class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDataSource, UITableViewDelegate
+{
     @IBOutlet weak var SearchTab: UISearchBar!
     @IBOutlet weak var TableView: UITableView!
     var timer = Timer()
@@ -20,7 +20,6 @@ class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDa
     var tappedCell = CategoryMovieTableViewCell()
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         SearchTab.delegate = self
         TableView.dataSource = self
         TableView.delegate = self
@@ -28,16 +27,13 @@ class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDa
         let nib: UINib = UINib(nibName: "CategoryMovieTableViewCell", bundle: nil)
         TableView.register(nib, forCellReuseIdentifier: "CategoryMovieTableViewCell")
         LoadAll()
-        
-        
     }
     func LoadAll(){
         DispatchQueue.main.asyncAfter(deadline: .now() , execute:{
             for i in 1...20 {
                 self.LoadLetter(page: i)
             }
-        }
-        )
+        })
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "searchdetailsegue" {
@@ -46,7 +42,6 @@ class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDa
         }
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print("entreeal de cancelarr")
         self.filtered.removeAll()
         self.filtered.append(contentsOf: self.movies)
         self.TableView.reloadData()
@@ -73,11 +68,9 @@ class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDa
                     self.TableView.reloadData();
                 case .failure(let error ): print(error)
                 }
-                
             })
-            
-        }
-        )
+        })
+        
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.searchtypingtext = searchText
@@ -101,9 +94,7 @@ class SearchViewController: UIViewController,UISearchBarDelegate,  UITableViewDa
             self.movies.append(contentsOf: self.movies2)
             self.filtered.append(contentsOf: self.movies2)
             self.TableView.reloadData()
-            
         })
-        
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         self.filtered.count

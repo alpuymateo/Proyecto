@@ -9,11 +9,11 @@ import UIKit
 import Kingfisher
 import Cosmos
 
-class DetailedViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, CategoryMovieTableViewCellDelegate{
-    
+class DetailedViewController: UIViewController,UITableViewDataSource, UITableViewDelegate
+{
+    @IBOutlet weak var releaseDate: UILabel!
     @IBOutlet weak var starImage: UIImageView!
     @IBOutlet weak var Favorite2Label: UILabel!
-//    @IBOutlet weak var FavoriteLabel: UILabel!
     @IBOutlet weak var SimilarTableView: UITableView!
     @IBOutlet weak var RankingTab: CosmosView!
     @IBOutlet weak var FavoriteSwitch: UISwitch!
@@ -27,7 +27,6 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         self.starImage.image =  UIImage(named:"star.png")
-        
         if(self.favorites.count == 0 ){
             DispatchQueue.main.async {
                 self.LoadGroup2()
@@ -46,10 +45,14 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
         let url = "https://image.tmdb.org/t/p/w500"
         let url2 = URL(string: url + path!)
         self.MovieImage.kf.setImage(with: url2)
+        self.releaseDate.text = self.movie.release_date
         self.RankingTab.rating = (self.movie.vote_average)/2
         let nib: UINib = UINib(nibName: "CategoryMovieTableViewCell", bundle: nil)
         SimilarTableView.register(nib, forCellReuseIdentifier: "CategoryMovieTableViewCell")
         self.OverviewText.text = self.movie.overview
+        SetFavorites()
+    }
+    func SetFavorites(){
         for item2 in self.favorites {
             if (item2.id == self.movie.id){
                 self.FavoriteSwitch.isOn = true
@@ -57,7 +60,6 @@ class DetailedViewController: UIViewController,UITableViewDataSource, UITableVie
                 self.starImage.isHidden = false
                 self.Favorite2Label.isHidden = true
             }
-
         }
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
